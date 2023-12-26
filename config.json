@@ -1,0 +1,27 @@
+{
+  "name": {
+    "zh-cn": "Maxbot行空板小车电机驱动",
+    "en": "Max:bot Unihiker"
+  },
+  "description": {
+    "zh-cn": "基于行空板平台的机器人小车电机驱动模块",
+    "en": "Max:bot motor driver based on Unihiker"
+  },
+  "author": "winster",
+  "email": "2310016043@qq.com",
+  "license": "MIT",
+  "isBoard": false,
+  "id": "Maxbot_driver",
+  "version": "0.0.1",
+  "platform": ["win"],
+  "asset": {
+    "python": {
+      "dir": "python/",
+      "main": "main.ts",
+      "version": "0.0.1",
+      "dependencies": {
+                "pinpong":""
+      }
+      }
+  }
+}
