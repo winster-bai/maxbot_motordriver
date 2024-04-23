@@ -1,82 +1,66 @@
-enum DRI {
-    //% block="M1(P7,P16~)"
-    1,
-    //% block="M2(P6,P8~)"
-    2,
-
-}
-
-enum DER {
-    //% block="正转"
-    1,
-    //% block="反转"
-    0,
-
-}
-
-enum STOP {
-    //% block="M1(P7,P16~)"
-    1,
-    //% block="M2(P6,P8~)"
-    2,
-    //% block="全部"
-    3
-}
 
 
-//% color="#fa1644" iconWidth=50 iconHeight=40
+//% color="#2ed573" iconWidth=50 iconHeight=40
 namespace Maxbot{
 
-
-    
-    //% block="电机[DRI]以[NUM]速度[DER]" blockType="command"
-    //% DRI.shadow="dropdownRound" DRI.options="DRI" DRI.defl="DRI.1"
-    //% NUM.shadow="range" NUM.params.min=0 NUM.params.max=1023 NUM.defl=0
-    //% DER.shadow="dropdownRound" DER.options="DER" DER.defl="DER.1"
+    //% block="motor [DRI] [NUM] speed:[DER]" blockType="command"
+    //% DRI.shadow="dropdown" DRI.options="DRI" 
+    //% NUM.shadow="range" NUM.params.min=0 NUM.params.max=1023 NUM.defl=512
+    //% DER.shadow="dropdown" DER.options="DER" 
     export function speed(parameter: any, block: any){
         let driver = parameter.DRI.code
         let number = parameter.NUM.code
         let der = parameter.DER.code
 
-        Generator.addImport("from pinpong.board import Pin");
-        Generator.addImport("from pinpong.board import Board");
-
+        Generator.addImport("from pinpong.board import Board,Pin");
         // Generator.addInitHeader("init","Board().begin()");
-        Generator.addInit("pin1","pin1 = Pin(Pin.P7, Pin.OUT)");
-        Generator.addInit("pin2","pin2 = Pin(Pin.P16, Pin.PWM)");
-        Generator.addInit("pin3","pin3 = Pin(Pin.P6, Pin.OUT)");
-        Generator.addInit("pin4","pin4 = Pin(Pin.P8, Pin.PWM)")
+        Generator.addInit("pin1","pin_ml_d = Pin(Pin.P5, Pin.OUT)");
+        Generator.addInit("pin2","pin_ml_a = Pin(Pin.P8, Pin.PWM)");
+        Generator.addInit("pin3","pin_mr_d = Pin(Pin.P6, Pin.OUT)");
+        Generator.addInit("pin4","pin_mr_a = Pin(Pin.P16, Pin.PWM)")
         if (driver == "1"){
-            Generator.addCode(`pin1.write_digital(${der})`)
-            Generator.addCode(`pin2.write_analog(${number})`)
+            Generator.addCode(`pin_ml_d.write_digital(${der})`)
+            Generator.addCode(`pin_ml_a.write_analog(${number})`)
         }
-        else {
-            Generator.addCode(`pin3.write_digital(${der})`)
-            Generator.addCode(`pin4.write_analog(${number})`)
+        else if(driver == "2"){
+            Generator.addCode(`pin_mr_d.write_digital(${der})`)
+            Generator.addCode(`pin_mr_a.write_analog(${number})`)
+        }
+        else if(driver=="3") {
+            Generator.addCode(`pin_ml_d.write_digital(${der})`)
+            Generator.addCode(`pin_ml_a.write_analog(${number})`)
+            Generator.addCode(`pin_mr_d.write_digital(${der})`)
+            Generator.addCode(`pin_mr_a.write_analog(${number})`)
+        }
+        else{
+            Generator.addErrorPrompt("Error: Maxbot，DRI，未知输入参数")
         }
     }
 
-    //% block="电机[STOP]停止" blockType="command"
-    //% STOP.shadow="dropdownRound" STOP.options="STOP" STOP.defl="STOP.1"
+    //% block="motor [STOP] stop" blockType="command"
+    //% STOP.shadow="dropdown" STOP.options="STOP" 
     export function stop(parameter: any, block: any){
         let stop = parameter.STOP.code
-        Generator.addImport("from pinpong.board import Pin");
-        Generator.addImport("from pinpong.board import Board");
 
+        Generator.addImport("from pinpong.board import Board,Pin");
         // Generator.addInitHeader("init","Board().begin()");
-        Generator.addInit("pin1","pin1 = Pin(Pin.P7, Pin.OUT)");
-        Generator.addInit("pin2","pin2 = Pin(Pin.P16, Pin.PWM)");
-        Generator.addInit("pin3","pin3 = Pin(Pin.P6, Pin.OUT)");
-        Generator.addInit("pin4","pin4 = Pin(Pin.P8, Pin.PWM)")
+        Generator.addInit("pin1","pin_ml_d = Pin(Pin.P5, Pin.OUT)");
+        Generator.addInit("pin2","pin_ml_a = Pin(Pin.P8, Pin.PWM)");
+        Generator.addInit("pin3","pin_mr_d = Pin(Pin.P6, Pin.OUT)");
+        Generator.addInit("pin4","pin_mr_a = Pin(Pin.P16, Pin.PWM)")
+
         if (stop == "1"){
-            Generator.addCode(`pin2.write_analog(0)`)
+            Generator.addCode(`pin_ml_a.write_analog(0)`)
         }
         else if(stop == "2"){
-            Generator.addCode(`pin4.write_analog(0)`)
+            Generator.addCode(`pin_mr_a.write_analog(0)`)
         }
-        else {
-            Generator.addCode(`pin2.write_analog(0)`)
-            Generator.addCode(`pin4.write_analog(0)`)
+        else if(stop=="3") {
+            Generator.addCode(`pin_ml_a.write_analog(0)`)
+            Generator.addCode(`pin_mr_a.write_analog(0)`)
+        }
+        else{
+            Generator.addErrorPrompt("Error: Maxbot，STOP，未知输入参数")
         }
     }
 

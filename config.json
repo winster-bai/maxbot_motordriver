@@ -12,13 +12,13 @@
   "license": "MIT",
   "isBoard": false,
   "id": "Maxbot_driver",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "platform": ["win"],
   "asset": {
     "python": {
       "dir": "python/",
       "main": "main.ts",
-      "version": "0.0.1",
+      "version": "0.0.2",
       "dependencies": {
                 "pinpong":""
       }
