@@ -1,6 +1,10 @@
 {
 
-
-
+    "Maxbot.speed|block": "电机[DRI]以[NUM]速度[DER]",
+    "Maxbot.stop|block": "电机[STOP]停止",
+    "Maxbot.DER.forward|menu": "正转",
+    "Maxbot.DER.backforward|menu": "反转",
+    "Maxbot.STOP.All|menu": "全部",
+    "Maxbot.DRI.All|menu": "全部"
      
 }
